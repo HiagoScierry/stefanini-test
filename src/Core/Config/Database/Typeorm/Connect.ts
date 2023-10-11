@@ -2,11 +2,11 @@ import { DataSource } from "typeorm";
 
 const connect = new DataSource({
   type: "postgres",
-  host: "localhost",
+  host: process.env.POSTGRES_USER_HOSTNAME,
   port: 5432,
-  username: "root",
-  password: "admin",
-  database: "test",
+  username: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DB,
   synchronize: true,
   logging: false,
 });
