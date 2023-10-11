@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { healthCheckMiddleware } from "../Middleware/healthCheckMiddleware";
+import { healthCheckMiddleware } from "../Middlewares/healthCheckMiddleware";
 
 const healthCheckRouter = Router();
 
