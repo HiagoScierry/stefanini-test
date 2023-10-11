@@ -4,7 +4,8 @@ module.exports = {
         "es2021": true,
         "node": true
     },
-    "extends": "standard-with-typescript",
+    "plugins": ["@typescript-eslint"],
+    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
     "overrides": [
         {
             "env": {
@@ -22,5 +23,7 @@ module.exports = {
         "ecmaVersion": "latest"
     },
     "rules": {
+        "quotes": ["error", "double"],
+        "semi": ["error", "always"],
     }
-}
+};
