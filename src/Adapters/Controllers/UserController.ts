@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { GetAllUserUseCase } from "../../Core/UseCases/GetAllUserUseCase";
 import { PrismaUserRepository } from "../Repository/Prisma/PrismaUserRepository";
 import { GetUserByIdUseCase } from "../../Core/UseCases/GetUserByIdUseCase";
+import { CreateUserUseCase } from "../../Core/UseCases/CreateUserUseCase";
 
 export const getAll = async (request: Request, response: Response) => {
     const getAllUserUseCase = new GetAllUserUseCase(new PrismaUserRepository());
@@ -24,3 +25,18 @@ export const getUserById = async (request: Request, response: Response) => {
 
     return response.json(user);
 };
+
+export const createUser = async (request: Request, response: Response) => {
+    const { name, age, office } = request.body;
+
+    const createUserUseCase = new CreateUserUseCase(new PrismaUserRepository());
+
+    const userId = await createUserUseCase.execute({
+        name,
+        age,
+        office,
+    });
+
+    return response.status(201).json({ id: userId });
+};
+
