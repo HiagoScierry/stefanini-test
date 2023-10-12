@@ -4,6 +4,7 @@ import { PrismaUserRepository } from "../Repository/Prisma/PrismaUserRepository"
 import { GetUserByIdUseCase } from "../../Core/UseCases/GetUserByIdUseCase";
 import { CreateUserUseCase } from "../../Core/UseCases/CreateUserUseCase";
 import { UserSchemaValid } from "../../Core/Schemas/User";
+import { UpdateUserUseCase } from "../../Core/UseCases/UpdateUserUseCase";
 
 export const getAll = async (request: Request, response: Response) => {
     const getAllUserUseCase = new GetAllUserUseCase(new PrismaUserRepository());
@@ -38,16 +39,29 @@ export const createUser = async (request: Request, response: Response) => {
         });
     }
 
-    const { name, age, office } = request.body;
-
     const createUserUseCase = new CreateUserUseCase(new PrismaUserRepository());
 
-    const userId = await createUserUseCase.execute({
-        name,
-        age,
-        office,
-    });
+    const userId = await createUserUseCase.execute(request.body);
 
     return response.status(201).json({ id: userId });
 };
 
+
+export const updateUser = async (request: Request, response: Response) => {
+    const { id } = request.params;
+
+    const { error } = UserSchemaValid.validate(request.body);
+
+    if(error) {
+        return response.status(400).json({
+            message: error.message,
+            error: error.details,
+        });
+    }
+
+    const createUserUseCase = new UpdateUserUseCase(new PrismaUserRepository());
+
+    const userId = await createUserUseCase.execute(parseInt(id), request.body);
+
+    return response.status(201).json({ id: userId });
+};
