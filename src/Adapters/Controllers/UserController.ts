@@ -3,6 +3,7 @@ import { GetAllUserUseCase } from "../../Core/UseCases/GetAllUserUseCase";
 import { PrismaUserRepository } from "../Repository/Prisma/PrismaUserRepository";
 import { GetUserByIdUseCase } from "../../Core/UseCases/GetUserByIdUseCase";
 import { CreateUserUseCase } from "../../Core/UseCases/CreateUserUseCase";
+import { UserSchemaValid } from "../../Core/Schemas/User";
 
 export const getAll = async (request: Request, response: Response) => {
     const getAllUserUseCase = new GetAllUserUseCase(new PrismaUserRepository());
@@ -27,6 +28,16 @@ export const getUserById = async (request: Request, response: Response) => {
 };
 
 export const createUser = async (request: Request, response: Response) => {
+
+    const { error } = UserSchemaValid.validate(request.body);
+
+    if(error) {
+        return response.status(400).json({
+            message: error.message,
+            error: error.details,
+        });
+    }
+
     const { name, age, office } = request.body;
 
     const createUserUseCase = new CreateUserUseCase(new PrismaUserRepository());
