@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { UserRepositoryInMemory } from "../../Adapters/Repository/InMemory/UserRepositoryInMemory";
-import { IUserRepository } from "../../Adapters/Repository/Interfaces/IUserRepository";
+import { IUserRepository, UserSchema } from "../../Adapters/Repository/Interfaces/IUserRepository";
 import { GetUserByIdUseCase } from "./GetUserByIdUseCase";
 
 describe("GetUserByIdUseCase", () => { 
@@ -20,7 +20,7 @@ describe("GetUserByIdUseCase", () => {
     });
 
     it("should return user if user found", async () => {
-        const user = {
+        const user : UserSchema = {
             name: "Hiago Moreira",
             age: 20,
             office: "Developer",
