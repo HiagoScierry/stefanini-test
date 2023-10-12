@@ -39,4 +39,15 @@ describe("UpdateUserUseCase", () => {
 
     });
 
+    it("should not be able to update a user that does not exist", async () => {
+        const user: UserSchema = {
+            name: "Hiago Moreira",
+            age: 20,
+            office: "Developer",
+        };
+
+        await expect(updateUserUseCase.execute(2, user)).rejects.toEqual(new Error("User not found"));
+
+    });
+
 });
