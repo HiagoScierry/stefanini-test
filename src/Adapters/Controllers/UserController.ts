@@ -62,9 +62,11 @@ export const updateUser = async (request: Request, response: Response) => {
 
     const updateUserUseCase = new UpdateUserUseCase(new PrismaUserRepository());
 
-    const userId = await updateUserUseCase.execute(parseInt(id), request.body);
+    await updateUserUseCase.execute(parseInt(id), request.body);
 
-    return response.status(201).json({ id: userId });
+    return response.status(201).json( {
+        message: "User updated",
+    });
 };
 
 
