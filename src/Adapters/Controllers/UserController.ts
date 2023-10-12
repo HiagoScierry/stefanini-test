@@ -5,6 +5,7 @@ import { GetUserByIdUseCase } from "../../Core/UseCases/GetUserByIdUseCase";
 import { CreateUserUseCase } from "../../Core/UseCases/CreateUserUseCase";
 import { UserSchemaValid } from "../../Core/Schemas/User";
 import { UpdateUserUseCase } from "../../Core/UseCases/UpdateUserUseCase";
+import { DeleteUserUseCase } from "../../Core/UseCases/DeleteUserUseCase";
 
 export const getAll = async (request: Request, response: Response) => {
     const getAllUserUseCase = new GetAllUserUseCase(new PrismaUserRepository());
@@ -59,9 +60,20 @@ export const updateUser = async (request: Request, response: Response) => {
         });
     }
 
-    const createUserUseCase = new UpdateUserUseCase(new PrismaUserRepository());
+    const updateUserUseCase = new UpdateUserUseCase(new PrismaUserRepository());
 
-    const userId = await createUserUseCase.execute(parseInt(id), request.body);
+    const userId = await updateUserUseCase.execute(parseInt(id), request.body);
 
     return response.status(201).json({ id: userId });
+};
+
+
+export const deleteUser = async (request: Request, response: Response) => {
+    const { id } = request.params;
+
+    const deleteUserUseCase = new DeleteUserUseCase(new PrismaUserRepository());
+
+    await deleteUserUseCase.execute(parseInt(id));
+
+    return response.status(201).json({ message: "User deleted" });
 };
